@@ -29,21 +29,28 @@ class _MyScaffoldState extends State<MyScaffold> {
   int index = 0;
 
   final colorsRgb = <Color>[Colors.red, Colors.green, Colors.blue];
+  Color fcolor = Colors.red;
   final wColors = ['RED', 'GREEN', 'BLUE'];
-  var wcolor = 'RED';
+  String wColor = 'RED';
 
   Color setColor(List isUp){
     int i = 0;
     for(i; i < isUp.length; i++){
       if(isUp[i]){
-        wcolor = wColors[i];
-        print(wcolor);
         return colorsRgb[i];
       }
     }
-    wcolor = wColors[i];
-    print(wcolor);
     return colorsRgb[i];
+  }
+
+  String setText(List isUp){
+    int i = 0;
+    for(i; i < isUp.length; i++){
+      if(isUp[i]){
+        return wColors[i];
+      }
+    }
+    return wColors[i];
   }
 
   @override
@@ -92,7 +99,7 @@ class _MyScaffoldState extends State<MyScaffold> {
           ),
           Center(
             child: BigCard(
-                displayText: wcolor, textColor: setColor(isUp)),
+                displayText: wColor, textColor: fcolor),
           ),
           Positioned(
             bottom: 30,
@@ -104,7 +111,7 @@ class _MyScaffoldState extends State<MyScaffold> {
                 children: [
                   //Up
                   FloatingActionButton(
-                    foregroundColor: setColor(isUp), 
+                    foregroundColor: fcolor, 
                     backgroundColor: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -118,13 +125,17 @@ class _MyScaffoldState extends State<MyScaffold> {
                             isUp[index] = true;
                           }
                         }
+                        //setting the foreground color
+                        fcolor = setColor(isUp);
+                        //setting the text
+                        wColor = setText(isUp);
                       });
                     },
                     child: const Icon(Icons.arrow_upward, size: 40.0),
                   ),
                   //Down
                   FloatingActionButton(
-                    foregroundColor: setColor(isUp),
+                    foregroundColor: fcolor,
                     backgroundColor: Colors.white,
                     onPressed: () {
                       setState(() {
@@ -138,6 +149,10 @@ class _MyScaffoldState extends State<MyScaffold> {
                             isUp[index] = false;
                           }
                         }
+                        //setting the foreground color
+                        fcolor = setColor(isUp);
+                        //setting the text
+                        wColor = setText(isUp);
                       });
                     },
                     child: const Icon(Icons.arrow_downward, size: 40.0,),
@@ -152,13 +167,12 @@ class _MyScaffoldState extends State<MyScaffold> {
   }
 }
 
-// ignore: must_be_immutable
 class BigCard extends StatelessWidget {
-  BigCard({super.key, required this.displayText, required this.textColor});
+  const BigCard({super.key, required this.displayText, required this.textColor});
 
-  String displayText;
+  final String displayText;
 
-  Color textColor;
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
